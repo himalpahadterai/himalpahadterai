@@ -1,0 +1,125 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Direct check for runtime admin email or staff profile with super_admin role
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "mithilanchalmedia486@gmail.com" ||
+        (exists(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)).data.role == "super_admin" &&
+         get(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)).data.status == "active")
+      );
+    }
+
+    function isContentEditor() {
+      return isSuperAdmin() || (
+        isSignedIn() &&
+        exists(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)).data.role == "content_editor" &&
+        get(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)).data.status == "active"
+      );
+    }
+
+    function isSalesStaff() {
+      return isSuperAdmin() || (
+        isSignedIn() &&
+        exists(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)).data.role == "sales_staff" &&
+        get(/databases/$(database)/documents/staffProfiles/$(request.auth.uid)).data.status == "active"
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidEnquiry(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.phone is string && data.phone.size() > 0 && data.phone.size() <= 30 &&
+             data.machineInterest is string && data.machineInterest.size() <= 150 &&
+             data.message is string && data.message.size() <= 2500 &&
+             data.privacyConsent == true &&
+             data.status == 'new';
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Products collection
+    match /products/{productId} {
+      allow read: if resource.data.status == 'published' || isContentEditor();
+      allow create, update, delete: if isContentEditor();
+    }
+
+    // Categories collection
+    match /categories/{categoryId} {
+      allow read: if resource.data.status == 'published' || isContentEditor();
+      allow create, update, delete: if isContentEditor();
+    }
+
+    // Hero Slides collection
+    match /heroSlides/{slideId} {
+      allow read: if resource.data.status == 'published' || isContentEditor();
+      allow create, update, delete: if isContentEditor();
+    }
+
+    // Site Settings collection
+    match /siteSettings/{settingId} {
+      allow read: if true;
+      allow write: if isContentEditor();
+    }
+
+    // Pages collection (About, Raw Materials, Training, Privacy, Terms)
+    match /pages/{pageId} {
+      allow read: if true;
+      allow write: if isContentEditor();
+    }
+
+    // Enquiries collection (Strictly Private customer PII)
+    match /enquiries/{enquiryId} {
+      // Unauthenticated / public users can create valid enquiries with verification
+      allow create: if isValidEnquiry(incoming());
+      // Only authorized sales staff or super admin can read or list enquiries
+      allow read: if isSalesStaff();
+      // Sales staff or super admin can update statuses, notes, and assignments
+      allow update: if isSalesStaff();
+      // Only super admin can delete enquiries
+      allow delete: if isSuperAdmin();
+    }
+
+    // Staff Profiles collection
+    match /staffProfiles/{staffId} {
+      allow read: if isSignedIn() && (request.auth.uid == staffId || isSuperAdmin());
+      allow write: if isSuperAdmin();
+    }
+
+    // Audit Logs collection (Append-only by staff, immutable)
+    match /auditLogs/{logId} {
+      allow read: if isSuperAdmin();
+      allow create: if isSignedIn() && (isContentEditor() || isSalesStaff());
+      allow update, delete: if false;
+    }
+
+    // Redirects collection
+    match /redirects/{redirectId} {
+      allow read: if true;
+      allow write: if isContentEditor();
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Himal Pahad Tarai Traders",
+  "description": "Machinery, raw materials, and industrial equipment catalogue and enquiry portal for Himal Pahad Tarai Traders Pvt. Ltd., Mahottari, Nepal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

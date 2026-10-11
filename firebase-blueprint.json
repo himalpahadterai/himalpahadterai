@@ -1,0 +1,209 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Machinery catalogue product record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "slug": { "type": "string", "maxLength": 150, "pattern": "^[a-z0-9-]+$" },
+        "categoryId": { "type": "string", "maxLength": 64 },
+        "shortDescription": { "type": "string", "maxLength": 300 },
+        "detailedDescription": { "type": "string", "maxLength": 5000 },
+        "images": { "type": "array", "description": "Array of image URLs" },
+        "imageAlts": { "type": "array", "description": "Array of image alt texts" },
+        "specifications": { "type": "array", "description": "Array of spec objects { label, value }" },
+        "price": { "type": "string", "maxLength": 50 },
+        "priceType": { "type": "string", "enum": ["request_price", "fixed"] },
+        "currency": { "type": "string", "maxLength": 10 },
+        "availability": { "type": "string", "enum": ["available_on_order", "in_stock", "inquire_lead_time"] },
+        "featured": { "type": "boolean" },
+        "videoUrl": { "type": "string", "maxLength": 300 },
+        "brochureUrl": { "type": "string", "maxLength": 300 },
+        "seoTitle": { "type": "string", "maxLength": 150 },
+        "seoDescription": { "type": "string", "maxLength": 300 },
+        "status": { "type": "string", "enum": ["published", "draft", "archived"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "slug", "categoryId", "shortDescription", "status", "priceType", "availability"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Machine category taxonomy",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 120 },
+        "slug": { "type": "string", "maxLength": 120, "pattern": "^[a-z0-9-]+$" },
+        "description": { "type": "string", "maxLength": 1000 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "order": { "type": "number" },
+        "status": { "type": "string", "enum": ["published", "draft", "archived"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "slug", "description", "status"]
+    },
+    "HeroSlide": {
+      "title": "HeroSlide",
+      "description": "Homepage full-width hero presentation slide",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 300 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "buttonText": { "type": "string", "maxLength": 60 },
+        "buttonLink": { "type": "string", "maxLength": 300 },
+        "order": { "type": "number" },
+        "status": { "type": "string", "enum": ["published", "draft"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "description", "imageUrl", "buttonText", "buttonLink", "order", "status"]
+    },
+    "Enquiry": {
+      "title": "Enquiry",
+      "description": "Customer machinery/raw material quotation enquiry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "refNumber": { "type": "string", "maxLength": 50 },
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 120 },
+        "location": { "type": "string", "maxLength": 120 },
+        "machineInterest": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "privacyConsent": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["new", "contacted", "quotation_sent", "follow_up", "closed"] },
+        "assignedStaff": { "type": "string", "maxLength": 100 },
+        "internalNotes": { "type": "string", "maxLength": 3000 },
+        "followUpDate": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["refNumber", "name", "phone", "machineInterest", "message", "privacyConsent", "status"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global enterprise contact, branding, and WhatsApp destination settings",
+      "type": "object",
+      "properties": {
+        "companyName": { "type": "string", "maxLength": 150 },
+        "regAddress": { "type": "string", "maxLength": 250 },
+        "branchAddress": { "type": "string", "maxLength": 250 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "whatsappNumber": { "type": "string", "maxLength": 30 },
+        "whatsappCountryCode": { "type": "string", "maxLength": 10 },
+        "email": { "type": "string", "maxLength": 120 },
+        "intendedDomain": { "type": "string", "maxLength": 120 },
+        "canonicalBaseUrl": { "type": "string", "maxLength": 200 },
+        "logoUrl": { "type": "string", "maxLength": 500 },
+        "faviconUrl": { "type": "string", "maxLength": 500 },
+        "aboutText": { "type": "string", "maxLength": 3000 },
+        "rawMaterialsText": { "type": "string", "maxLength": 3000 },
+        "trainingText": { "type": "string", "maxLength": 3000 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["companyName", "regAddress", "phone", "whatsappNumber", "email"]
+    },
+    "PageContent": {
+      "title": "PageContent",
+      "description": "Custom editable page content for About, Raw Materials, Training, Privacy, Terms",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string", "maxLength": 100 },
+        "title": { "type": "string", "maxLength": 150 },
+        "summary": { "type": "string", "maxLength": 500 },
+        "body": { "type": "string", "maxLength": 20000 },
+        "seoTitle": { "type": "string", "maxLength": 150 },
+        "seoDescription": { "type": "string", "maxLength": 300 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["slug", "title", "body"]
+    },
+    "StaffProfile": {
+      "title": "StaffProfile",
+      "description": "Staff profile record with assigned role",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 120 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["super_admin", "content_editor", "sales_staff"] },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role", "status"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Immutable audit log trail for staff actions",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string", "maxLength": 80 },
+        "collection": { "type": "string", "maxLength": 50 },
+        "docId": { "type": "string", "maxLength": 128 },
+        "actorUid": { "type": "string", "maxLength": 128 },
+        "actorEmail": { "type": "string", "maxLength": 120 },
+        "details": { "type": "string", "maxLength": 2000 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["action", "actorUid", "timestamp"]
+    },
+    "Redirect": {
+      "title": "Redirect",
+      "description": "URL redirect mapper for SEO slug migrations",
+      "type": "object",
+      "properties": {
+        "fromSlug": { "type": "string", "maxLength": 200 },
+        "toSlug": { "type": "string", "maxLength": 200 },
+        "type": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["fromSlug", "toSlug", "type"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Collection of industrial machines and equipment"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Collection of machine category categories"
+    },
+    "/heroSlides/{slideId}": {
+      "schema": "HeroSlide",
+      "description": "Collection of homepage hero sliders"
+    },
+    "/enquiries/{enquiryId}": {
+      "schema": "Enquiry",
+      "description": "Private collection of customer machine quotations and enquiries"
+    },
+    "/siteSettings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "Global enterprise configuration and contact info"
+    },
+    "/pages/{pageId}": {
+      "schema": "PageContent",
+      "description": "Editable page records for public company pages"
+    },
+    "/staffProfiles/{staffId}": {
+      "schema": "StaffProfile",
+      "description": "Admin and staff roles authorization records"
+    },
+    "/auditLogs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Audit logging records for administrative changes"
+    },
+    "/redirects/{redirectId}": {
+      "schema": "Redirect",
+      "description": "Redirect routing records"
+    }
+  }
+}
