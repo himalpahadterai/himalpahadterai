@@ -11,7 +11,7 @@ export const INITIAL_SETTINGS: SiteSettings = {
   intendedDomain: 'himalpahadtaraitraders.com.np',
   canonicalBaseUrl: 'https://himalpahadtaraitraders.com.np',
   businessDescription: 'Small and domestic-industry machinery, raw materials and training enquiries.',
-  logoUrl: '/images/logo.svg',
+  logoUrl: '/src/assets/images/regenerated_image_1791949718649.jpg',
   aboutSnippet: 'Himal Pahad Tarai Traders Pvt. Ltd. facilitates small and domestic scale manufacturing enterprises throughout Nepal with robust machinery, essential raw materials, and practical operational training.',
   facebookUrl: 'https://facebook.com',
   youtubeUrl: 'https://youtube.com',

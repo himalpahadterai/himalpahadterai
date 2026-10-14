@@ -22,9 +22,10 @@ export const Footer: React.FC<FooterProps> = ({ settings, categories, onNavigate
             <div className="flex items-center gap-3">
               <div className="w-14 h-14 bg-white p-1 rounded-lg flex items-center justify-center">
                 <img
-                  src={settings.logoUrl || '/images/logo.svg'}
+                  src={settings.logoUrl && settings.logoUrl !== '/images/logo.svg' ? settings.logoUrl : '/src/assets/images/regenerated_image_1791949718649.jpg'}
                   alt="Himal Pahad Tarai Traders Logo"
                   className="max-h-full max-w-full object-contain"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div>

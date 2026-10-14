@@ -240,19 +240,20 @@ export const SettingsManager: React.FC<SettingsManagerProps> = ({ settings, onRe
                 />
                 <button
                   type="button"
-                  onClick={() => setFormData({ ...formData, logoUrl: '/images/logo.svg' })}
+                  onClick={() => setFormData({ ...formData, logoUrl: '/src/assets/images/regenerated_image_1791949718649.jpg' })}
                   className="text-[11px] text-red-600 hover:underline mt-1 cursor-pointer block"
                 >
-                  Reset to original official logo asset (/images/logo.svg)
+                  Reset to original official logo asset (/src/assets/images/regenerated_image_1791949718649.jpg)
                 </button>
               </div>
 
               <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200 flex items-center gap-4">
                 <div className="w-16 h-16 bg-white border border-neutral-200 rounded-lg p-1 flex items-center justify-center">
                   <img
-                    src={formData.logoUrl || '/images/logo.svg'}
+                    src={formData.logoUrl && formData.logoUrl !== '/images/logo.svg' ? formData.logoUrl : '/src/assets/images/regenerated_image_1791949718649.jpg'}
                     alt="Active Logo Preview"
                     className="max-h-full max-w-full object-contain"
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <div className="text-xs text-neutral-600">

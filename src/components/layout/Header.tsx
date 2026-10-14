@@ -88,10 +88,11 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Official Logo Container - Preserving original aspect ratio & object-fit: contain */}
             <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center p-1 bg-white rounded-lg border border-neutral-100 shadow-2xs group-hover:border-red-200 transition-colors">
               <img
-                src={settings.logoUrl || '/images/logo.svg'}
+                src={settings.logoUrl && settings.logoUrl !== '/images/logo.svg' ? settings.logoUrl : '/src/assets/images/regenerated_image_1791949718649.jpg'}
                 alt="Himal Pahad Tarai Traders Pvt. Ltd. Official Logo"
                 className="max-h-full max-w-full object-contain"
                 loading="eager"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div>

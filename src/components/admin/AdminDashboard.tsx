@@ -89,9 +89,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white rounded-lg p-0.5 flex items-center justify-center">
             <img
-              src={settings.logoUrl || '/images/logo.svg'}
+              src={settings.logoUrl && settings.logoUrl !== '/images/logo.svg' ? settings.logoUrl : '/src/assets/images/regenerated_image_1791949718649.jpg'}
               alt="HPT Logo"
               className="max-h-full max-w-full object-contain"
+              referrerPolicy="no-referrer"
             />
           </div>
           <div>
