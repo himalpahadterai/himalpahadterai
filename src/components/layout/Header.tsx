@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Phone, MessageCircle, Menu, X, Shield, Lock, ExternalLink } from 'lucide-react';
 import { SiteSettings } from '../../types';
 import { getGeneralWhatsAppUrl } from '../../utils/whatsapp';
+import defaultLogo from '../../assets/images/regenerated_image_1791949718649.jpg';
 
 interface HeaderProps {
   settings: SiteSettings;
@@ -86,13 +87,19 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-3.5 cursor-pointer group select-none py-1"
           >
             {/* Official Logo Container - Preserving original aspect ratio & object-fit: contain */}
-            <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center p-1 bg-white rounded-lg border border-neutral-100 shadow-2xs group-hover:border-red-200 transition-colors">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center p-1 bg-white rounded-lg border border-neutral-100 shadow-2xs group-hover:border-red-200 transition-colors overflow-hidden">
               <img
-                src={settings.logoUrl && settings.logoUrl !== '/images/logo.svg' ? settings.logoUrl : '/src/assets/images/regenerated_image_1791949718649.jpg'}
+                src={settings.logoUrl && !settings.logoUrl.includes('logo.svg') ? settings.logoUrl : (defaultLogo || '/images/logo.jpg')}
                 alt="Himal Pahad Tarai Traders Pvt. Ltd. Official Logo"
                 className="max-h-full max-w-full object-contain"
                 loading="eager"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src !== window.location.origin + '/images/logo.jpg') {
+                    target.src = '/images/logo.jpg';
+                  }
+                }}
               />
             </div>
             <div>

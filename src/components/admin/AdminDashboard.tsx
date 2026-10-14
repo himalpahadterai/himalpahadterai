@@ -18,6 +18,7 @@ import { SettingsManager } from './SettingsManager';
 import { StaffManager } from './StaffManager';
 import { AuditLogViewer } from './AuditLogViewer';
 import { seedInitialDatabase } from '../../services/dataService';
+import defaultLogo from '../../assets/images/regenerated_image_1791949718649.jpg';
 import {
   LayoutDashboard,
   Box,
@@ -87,12 +88,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* Top Admin Navbar */}
       <header className="bg-neutral-900 text-white px-4 sm:px-6 lg:px-8 py-3.5 border-b border-neutral-800 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-lg p-0.5 flex items-center justify-center">
+          <div className="w-10 h-10 bg-white rounded-lg p-0.5 flex items-center justify-center overflow-hidden">
             <img
-              src={settings.logoUrl && settings.logoUrl !== '/images/logo.svg' ? settings.logoUrl : '/src/assets/images/regenerated_image_1791949718649.jpg'}
+              src={settings.logoUrl && !settings.logoUrl.includes('logo.svg') ? settings.logoUrl : (defaultLogo || '/images/logo.jpg')}
               alt="HPT Logo"
               className="max-h-full max-w-full object-contain"
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (target.src !== window.location.origin + '/images/logo.jpg') {
+                  target.src = '/images/logo.jpg';
+                }
+              }}
             />
           </div>
           <div>

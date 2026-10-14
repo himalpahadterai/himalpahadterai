@@ -2,6 +2,7 @@ import React from 'react';
 import { Phone, Mail, MapPin, MessageCircle, ShieldCheck, Lock, ChevronRight } from 'lucide-react';
 import { SiteSettings, Category } from '../../types';
 import { getGeneralWhatsAppUrl } from '../../utils/whatsapp';
+import defaultLogo from '../../assets/images/regenerated_image_1791949718649.jpg';
 
 interface FooterProps {
   settings: SiteSettings;
@@ -20,12 +21,18 @@ export const Footer: React.FC<FooterProps> = ({ settings, categories, onNavigate
           {/* Col 1: Brand & Identity */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 bg-white p-1 rounded-lg flex items-center justify-center">
+              <div className="w-14 h-14 bg-white p-1 rounded-lg flex items-center justify-center overflow-hidden">
                 <img
-                  src={settings.logoUrl && settings.logoUrl !== '/images/logo.svg' ? settings.logoUrl : '/src/assets/images/regenerated_image_1791949718649.jpg'}
+                  src={settings.logoUrl && !settings.logoUrl.includes('logo.svg') ? settings.logoUrl : (defaultLogo || '/images/logo.jpg')}
                   alt="Himal Pahad Tarai Traders Logo"
                   className="max-h-full max-w-full object-contain"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src !== window.location.origin + '/images/logo.jpg') {
+                      target.src = '/images/logo.jpg';
+                    }
+                  }}
                 />
               </div>
               <div>
